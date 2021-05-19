@@ -14,53 +14,53 @@ import pprint
 import enum
 
 
-QTD_CARTAS_INICIAIS = 7
-JOGADORES = 1
-CORES_VALIDAS = ("amarelo", "azul", "verde", "vermelho")
+# QTD_CARTAS_INICIAIS = 7
+# JOGADORES = 1
+# CORES_VALIDAS = ("amarelo", "azul", "verde", "vermelho")
 
-R = T.TypeVar("R")
-
-
-class Pilha(T.Deque[R]):
-    def __init__(self, objs):
-        super().__init__(objs)
-        self.pilha = deque(objs)
-
-    def __len__(self) -> int:
-        return len(self.pilha)
-
-    def topo(self):
-        return self.pilha[0]
-
-    def empilhar(self, obj: R):
-        self.pilha.appendleft(obj)
-
-    def desempilhar(self) -> R:
-        return self.pilha.popleft()
-
-    def como_lista(self) -> T.List[R]:
-        return list(self.pilha)
+# R = T.TypeVar("R")
 
 
-class Carta:
-    def __init__(self, cor: str, tipo: str):
-        self.cor = cor
-        self.tipo = tipo
+# class Pilha(T.Deque[R]):
+#     def __init__(self, objs):
+#         super().__init__(objs)
+#         self.pilha = deque(objs)
 
-    def __repr__(self):
-        return f"Carta(cor={self.cor}, tipo={self.tipo})"
+#     def __len__(self) -> int:
+#         return len(self.pilha)
+
+#     def topo(self):
+#         return self.pilha[0]
+
+#     def empilhar(self, obj: R):
+#         self.pilha.appendleft(obj)
+
+#     def desempilhar(self) -> R:
+#         return self.pilha.popleft()
+
+#     def como_lista(self) -> T.List[R]:
+#         return list(self.pilha)
 
 
-class CartaEspecial(Carta):
-    def __init__(self, cor: str, tipo: str, esta_ativo: bool = False):
-        super().__init__(cor, tipo)
-        self.esta_ativo = esta_ativo
+# class Carta:
+#     def __init__(self, cor: str, tipo: str):
+#         self.cor = cor
+#         self.tipo = tipo
 
-    def __repr__(self):
-        return f"CartaEspecial(cor={self.cor}, tipo={self.tipo}, esta_ativo={self.esta_ativo})"
+#     def __repr__(self):
+#         return f"Carta(cor={self.cor}, tipo={self.tipo})"
 
 
-class Mao:
+# class CartaEspecial(Carta):
+#     def __init__(self, cor: str, tipo: str, esta_ativo: bool = False):
+#         super().__init__(cor, tipo)
+#         self.esta_ativo = esta_ativo
+
+#     def __repr__(self):
+#         return f"CartaEspecial(cor={self.cor}, tipo={self.tipo}, esta_ativo={self.esta_ativo})"
+
+
+class Player:
     def __init__(self, cartas: T.List[Carta]):
         self.cartas = cartas
 
@@ -201,241 +201,241 @@ class Mao:
         self._descartar(carta_selecionada, monte_descarte)
         return monte_compra, monte_descarte
 
-def selecionar_proximo_jogador(
-    idx_jogador_atual: int, quantidade_jogadores: int, em_sentido_horario: bool
-) -> int:
-    """
-    Seleciona o próximo jogador de acordo com o sentido.
-    :param idx_jogador_atual: Índice do jogador atual
-    :param quantidade_jogadores: Quantidade de jogadores
-    :param em_sentido_horario: Sentido é horário ou não?
-    :return: Índice do próximo jogador
-    """
-    if em_sentido_horario:
-        return (idx_jogador_atual + 1) % quantidade_jogadores
-    return abs(idx_jogador_atual - 1) % quantidade_jogadores
+# def selecionar_proximo_jogador(
+#     idx_jogador_atual: int, quantidade_jogadores: int, em_sentido_horario: bool
+# ) -> int:
+#     """
+#     Seleciona o próximo jogador de acordo com o sentido.
+#     :param idx_jogador_atual: Índice do jogador atual
+#     :param quantidade_jogadores: Quantidade de jogadores
+#     :param em_sentido_horario: Sentido é horário ou não?
+#     :return: Índice do próximo jogador
+#     """
+#     if em_sentido_horario:
+#         return (idx_jogador_atual + 1) % quantidade_jogadores
+#     return abs(idx_jogador_atual - 1) % quantidade_jogadores
 
 
-def aplicar_carta_especial(
-    maos: T.List[Mao],
-    idx_jogador_anterior: int,
-    idx_jogador_atual: int,
-    carta_especial: CartaEspecial,
-    monte_compra: Pilha[Carta],
-    monte_descarte: Pilha[Carta],
-    em_sentido_horario: bool,
-) -> T.Tuple[int, int, bool]:
-    """
-    Aplica a carta especial dependendo de seu tipo:
-     - Inverter: Troca o sentido da ordem dos jogadores.
-     - Pular: Passa para o próximo
-     - Mais dois: Compra duas cartas e passa para o próximo
-     - Mais quatro coringa: Compra quatro cartas e passa para o próximo.
-    :param maos:
-    :param idx_jogador_anterior:
-    :param idx_jogador_atual:
-    :param carta_especial:
-    :param monte_compra:
-    :param monte_descarte:
-    :param em_sentido_horario:
-    :return:
-    """
-    if carta_especial.esta_ativo:
-        if carta_especial.tipo == "inverter":
-            em_sentido_horario = not em_sentido_horario
-        else:
-            idx_proximo_jogador = selecionar_proximo_jogador(
-                idx_jogador_atual,
-                quantidade_jogadores=len(maos),
-                em_sentido_horario=em_sentido_horario,
-            )
-            proximo_jogador = maos[idx_proximo_jogador]
+# def aplicar_carta_especial(
+#     maos: T.List[Mao],
+#     idx_jogador_anterior: int,
+#     idx_jogador_atual: int,
+#     carta_especial: CartaEspecial,
+#     monte_compra: Pilha[Carta],
+#     monte_descarte: Pilha[Carta],
+#     em_sentido_horario: bool,
+# ) -> T.Tuple[int, int, bool]:
+#     """
+#     Aplica a carta especial dependendo de seu tipo:
+#      - Inverter: Troca o sentido da ordem dos jogadores.
+#      - Pular: Passa para o próximo
+#      - Mais dois: Compra duas cartas e passa para o próximo
+#      - Mais quatro coringa: Compra quatro cartas e passa para o próximo.
+#     :param maos:
+#     :param idx_jogador_anterior:
+#     :param idx_jogador_atual:
+#     :param carta_especial:
+#     :param monte_compra:
+#     :param monte_descarte:
+#     :param em_sentido_horario:
+#     :return:
+#     """
+#     if carta_especial.esta_ativo:
+#         if carta_especial.tipo == "inverter":
+#             em_sentido_horario = not em_sentido_horario
+#         else:
+#             idx_proximo_jogador = selecionar_proximo_jogador(
+#                 idx_jogador_atual,
+#                 quantidade_jogadores=len(maos),
+#                 em_sentido_horario=em_sentido_horario,
+#             )
+#             proximo_jogador = maos[idx_proximo_jogador]
 
-            if carta_especial.tipo == "pular":
-                pass
+#             if carta_especial.tipo == "pular":
+#                 pass
 
-            if carta_especial.tipo == "+2":
-                monte_compra, monte_descarte = proximo_jogador.comprar(monte_compra, monte_descarte, quantidade=2)
+#             if carta_especial.tipo == "+2":
+#                 monte_compra, monte_descarte = proximo_jogador.comprar(monte_compra, monte_descarte, quantidade=2)
 
-            if carta_especial.tipo == "+4 coringa":
-                monte_compra, monte_descarte = proximo_jogador.comprar(monte_compra, monte_descarte, quantidade=4)
-            idx_jogador_anterior = idx_jogador_atual
-            idx_jogador_atual = idx_proximo_jogador
+#             if carta_especial.tipo == "+4 coringa":
+#                 monte_compra, monte_descarte = proximo_jogador.comprar(monte_compra, monte_descarte, quantidade=4)
+#             idx_jogador_anterior = idx_jogador_atual
+#             idx_jogador_atual = idx_proximo_jogador
 
-        carta_especial.esta_ativo = False
+#         carta_especial.esta_ativo = False
 
-    return idx_jogador_anterior, idx_jogador_atual, em_sentido_horario
-
-
-def eh_carta_especial(carta: Carta) -> bool:
-    return isinstance(carta, CartaEspecial)
+#     return idx_jogador_anterior, idx_jogador_atual, em_sentido_horario
 
 
-def jogar_rodada(
-    maos: T.List[Mao],
-    monte_compra: Pilha[Carta],
-    monte_descarte: Pilha[Carta],
-    idx_jogador_anterior: int,
-    idx_jogador_atual: int,
-    em_sentido_horario: bool,
-) -> T.Tuple[int, int, bool, bool]:
-    """
-     - Um jogador é selecionado e ele joga sua carta;
-     - Após jogar sua carta, verificamos se o jogo terminou ou UNO.
-     - Caso não seja para ambos, verificamos se a carta jogada foi especial.
-     - Dependendo do tipo de carta especial, e se quem jogou antes não for o jogador,
-            nós a aplicamos.
-     - Independentemente do jogo terminar ou não, nós passamos para o próximo jogador.
-
-    :param maos: Mãos dos jogadores
-    :param monte_compra: Monte de compra
-    :param monte_descarte: Monte de descarte
-    :param idx_jogador_anterior: Índice do jogador anterior
-    :param idx_jogador_atual: Índice do jogador atual
-    :param em_sentido_horario: Sentido de rotação de jogadores
-    :return: (
-        Índice do jogador anterior, índice do jogador atual,
-        Sentido horário?, Jogo terminou
-    )
-    """
-    mao = maos[idx_jogador_atual]
-    monte_compra, monte_descarte = mao.jogar(monte_compra, monte_descarte)
-    terminou = False
-
-    if not mao.cartas:
-        print(f"Jogador {idx_jogador_atual} venceu.")
-        terminou = True
-    elif len(mao.cartas) == 1:
-        print(f"Jogador {idx_jogador_atual}: UNO!")
-    else:
-        topo_descarte = monte_descarte.topo()
-        if (
-            eh_carta_especial(topo_descarte)
-            and idx_jogador_anterior != idx_jogador_atual
-        ):
-            (
-                idx_jogador_anterior,
-                idx_jogador_atual,
-                em_sentido_horario,
-            ) = aplicar_carta_especial(
-                maos,
-                idx_jogador_anterior=idx_jogador_anterior,
-                idx_jogador_atual=idx_jogador_atual,
-                carta_especial=topo_descarte,
-                monte_compra=monte_compra,
-                monte_descarte=monte_descarte,
-                em_sentido_horario=em_sentido_horario,
-            )
-
-    idx_jogador_anterior = idx_jogador_atual
-    idx_jogador_atual = selecionar_proximo_jogador(
-        idx_jogador_atual,
-        quantidade_jogadores=len(maos),
-        em_sentido_horario=em_sentido_horario,
-    )
-
-    return idx_jogador_anterior, idx_jogador_atual, em_sentido_horario, terminou
+# def eh_carta_especial(carta: Carta) -> bool:
+#     return isinstance(carta, CartaEspecial)
 
 
-def distribui_cartas(
-    cartas: T.List[Carta], cartas_por_jogador: int,
-    jogadores: int
-) -> T.Tuple[T.List[Mao], Pilha[Carta], Pilha[Carta]]:
-    """
-    Cria jogadores, distribuindo cartas para cada um.
-    :param cartas: Cartas do UNO
-    :param jogadores: Quantidade de jogadores
-    :return: Mãos, monte de compra e monte de descarte
-    """
-    cartas_embaralhadas = random.sample(cartas, len(cartas))
+# def jogar_rodada(
+#     maos: T.List[Mao],
+#     monte_compra: Pilha[Carta],
+#     monte_descarte: Pilha[Carta],
+#     idx_jogador_anterior: int,
+#     idx_jogador_atual: int,
+#     em_sentido_horario: bool,
+# ) -> T.Tuple[int, int, bool, bool]:
+#     """
+#      - Um jogador é selecionado e ele joga sua carta;
+#      - Após jogar sua carta, verificamos se o jogo terminou ou UNO.
+#      - Caso não seja para ambos, verificamos se a carta jogada foi especial.
+#      - Dependendo do tipo de carta especial, e se quem jogou antes não for o jogador,
+#             nós a aplicamos.
+#      - Independentemente do jogo terminar ou não, nós passamos para o próximo jogador.
 
-    maos = []
-    for _ in range(jogadores):
-        cartas_mao = cartas_embaralhadas[:cartas_por_jogador]
-        cartas_embaralhadas = cartas_embaralhadas[cartas_por_jogador:]
-        mao = Mao(cartas_mao)
-        maos.append(mao)
+#     :param maos: Mãos dos jogadores
+#     :param monte_compra: Monte de compra
+#     :param monte_descarte: Monte de descarte
+#     :param idx_jogador_anterior: Índice do jogador anterior
+#     :param idx_jogador_atual: Índice do jogador atual
+#     :param em_sentido_horario: Sentido de rotação de jogadores
+#     :return: (
+#         Índice do jogador anterior, índice do jogador atual,
+#         Sentido horário?, Jogo terminou
+#     )
+#     """
+#     mao = maos[idx_jogador_atual]
+#     monte_compra, monte_descarte = mao.jogar(monte_compra, monte_descarte)
+#     terminou = False
 
-    monte_compra = Pilha(cartas_embaralhadas)
-    monte_descarte = Pilha([monte_compra.desempilhar()])
+#     if not mao.cartas:
+#         print(f"Jogador {idx_jogador_atual} venceu.")
+#         terminou = True
+#     elif len(mao.cartas) == 1:
+#         print(f"Jogador {idx_jogador_atual}: UNO!")
+#     else:
+#         topo_descarte = monte_descarte.topo()
+#         if (
+#             eh_carta_especial(topo_descarte)
+#             and idx_jogador_anterior != idx_jogador_atual
+#         ):
+#             (
+#                 idx_jogador_anterior,
+#                 idx_jogador_atual,
+#                 em_sentido_horario,
+#             ) = aplicar_carta_especial(
+#                 maos,
+#                 idx_jogador_anterior=idx_jogador_anterior,
+#                 idx_jogador_atual=idx_jogador_atual,
+#                 carta_especial=topo_descarte,
+#                 monte_compra=monte_compra,
+#                 monte_descarte=monte_descarte,
+#                 em_sentido_horario=em_sentido_horario,
+#             )
 
-    return maos, monte_compra, monte_descarte
+#     idx_jogador_anterior = idx_jogador_atual
+#     idx_jogador_atual = selecionar_proximo_jogador(
+#         idx_jogador_atual,
+#         quantidade_jogadores=len(maos),
+#         em_sentido_horario=em_sentido_horario,
+#     )
 
-
-def cria_cartas() -> T.List[Carta]:
-    """
-    Cria cartas de UNO.
-    :return: Cartas de UNO
-    """
-    cartas_comuns = []
-    for cor in CORES_VALIDAS:
-        for numero in itertools.chain(range(0, 10), range(1, 10)):
-            carta_comum = Carta(cor, str(numero))
-            cartas_comuns.append(carta_comum)
-
-    pular = 2 * [
-        CartaEspecial("amarelo", "pular"),
-        CartaEspecial("azul", "pular"),
-        CartaEspecial("verde", "pular"),
-        CartaEspecial("vermelho", "pular"),
-    ]
-
-    inverter = 2 * [
-        CartaEspecial("amarelo", "inverter"),
-        CartaEspecial("azul", "inverter"),
-        CartaEspecial("verde", "inverter"),
-        CartaEspecial("vermelho", "inverter"),
-    ]
-
-    mais_dois = 2 * [
-        CartaEspecial("amarelo", "+2"),
-        CartaEspecial("azul", "+2"),
-        CartaEspecial("verde", "+2"),
-        CartaEspecial("vermelho", "+2"),
-    ]
-
-    coringas = 4 * [CartaEspecial("*", "coringa"), CartaEspecial("*", "+4 coringa")]
-
-    cartas_especiais = pular + inverter + mais_dois + coringas
-
-    return cartas_comuns + cartas_especiais
-
-
-def main():
-    cartas = cria_cartas()
-    maos, monte_compra, monte_descarte = distribui_cartas(cartas, QTD_CARTAS_INICIAIS, JOGADORES)
-
-    idx_jogador_anterior = -1
-    idx_jogador_atual = 0
-    terminou = False
-    em_sentido_horario = True
-
-    # Se a primeira carta for coringa,
-    # o primeiro jogador deve escolher a cor.
-    if monte_descarte[0].cor == "*":
-        cor_selecionada = maos[0].seleciona_cor_de_coringa()
-        monte_descarte[0].cor = cor_selecionada
-
-    while not terminou:
-        print("-" * 20)
-        print(f"Vez do jogador {idx_jogador_atual}")
-
-        resultado = jogar_rodada(
-            maos,
-            monte_compra,
-            monte_descarte,
-            idx_jogador_anterior,
-            idx_jogador_atual,
-            em_sentido_horario,
-        )
-
-        (
-            idx_jogador_anterior,
-            idx_jogador_atual,
-            em_sentido_horario,
-            terminou,
-        ) = resultado
+#     return idx_jogador_anterior, idx_jogador_atual, em_sentido_horario, terminou
 
 
-if __name__ == "__main__":
-    main()
+# def distribui_cartas(
+#     cartas: T.List[Carta], cartas_por_jogador: int,
+#     jogadores: int
+# ) -> T.Tuple[T.List[Mao], Pilha[Carta], Pilha[Carta]]:
+#     """
+#     Cria jogadores, distribuindo cartas para cada um.
+#     :param cartas: Cartas do UNO
+#     :param jogadores: Quantidade de jogadores
+#     :return: Mãos, monte de compra e monte de descarte
+#     """
+#     cartas_embaralhadas = random.sample(cartas, len(cartas))
+
+#     maos = []
+#     for _ in range(jogadores):
+#         cartas_mao = cartas_embaralhadas[:cartas_por_jogador]
+#         cartas_embaralhadas = cartas_embaralhadas[cartas_por_jogador:]
+#         mao = Mao(cartas_mao)
+#         maos.append(mao)
+
+#     monte_compra = Pilha(cartas_embaralhadas)
+#     monte_descarte = Pilha([monte_compra.desempilhar()])
+
+#     return maos, monte_compra, monte_descarte
+
+
+# def cria_cartas() -> T.List[Carta]:
+#     """
+#     Cria cartas de UNO.
+#     :return: Cartas de UNO
+#     """
+#     cartas_comuns = []
+#     for cor in CORES_VALIDAS:
+#         for numero in itertools.chain(range(0, 10), range(1, 10)):
+#             carta_comum = Carta(cor, str(numero))
+#             cartas_comuns.append(carta_comum)
+
+#     pular = 2 * [
+#         CartaEspecial("amarelo", "pular"),
+#         CartaEspecial("azul", "pular"),
+#         CartaEspecial("verde", "pular"),
+#         CartaEspecial("vermelho", "pular"),
+#     ]
+
+#     inverter = 2 * [
+#         CartaEspecial("amarelo", "inverter"),
+#         CartaEspecial("azul", "inverter"),
+#         CartaEspecial("verde", "inverter"),
+#         CartaEspecial("vermelho", "inverter"),
+#     ]
+
+#     mais_dois = 2 * [
+#         CartaEspecial("amarelo", "+2"),
+#         CartaEspecial("azul", "+2"),
+#         CartaEspecial("verde", "+2"),
+#         CartaEspecial("vermelho", "+2"),
+#     ]
+
+#     coringas = 4 * [CartaEspecial("*", "coringa"), CartaEspecial("*", "+4 coringa")]
+
+#     cartas_especiais = pular + inverter + mais_dois + coringas
+
+#     return cartas_comuns + cartas_especiais
+
+
+# def main():
+#     cartas = cria_cartas()
+#     maos, monte_compra, monte_descarte = distribui_cartas(cartas, QTD_CARTAS_INICIAIS, JOGADORES)
+
+#     idx_jogador_anterior = -1
+#     idx_jogador_atual = 0
+#     terminou = False
+#     em_sentido_horario = True
+
+#     # Se a primeira carta for coringa,
+#     # o primeiro jogador deve escolher a cor.
+#     if monte_descarte[0].cor == "*":
+#         cor_selecionada = maos[0].seleciona_cor_de_coringa()
+#         monte_descarte[0].cor = cor_selecionada
+
+#     while not terminou:
+#         print("-" * 20)
+#         print(f"Vez do jogador {idx_jogador_atual}")
+
+#         resultado = jogar_rodada(
+#             maos,
+#             monte_compra,
+#             monte_descarte,
+#             idx_jogador_anterior,
+#             idx_jogador_atual,
+#             em_sentido_horario,
+#         )
+
+#         (
+#             idx_jogador_anterior,
+#             idx_jogador_atual,
+#             em_sentido_horario,
+#             terminou,
+#         ) = resultado
+
+
+# if __name__ == "__main__":
+#     main()
