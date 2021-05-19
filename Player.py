@@ -138,7 +138,7 @@ class Player:
 
             print(f"Dê um número de 0 a {len(cartas_possiveis) - 1}")
 
-    def _descartar(self, carta: Carta, monte_descarte: Pilha[Carta]):
+    def jogar(self, carta: Carta, monte_descarte: Pilha[Carta]):
         """
         Tira uma carta da mão e coloca no monte de descarte.
         :param carta: Carta selecionada
@@ -161,45 +161,45 @@ class Player:
                 )
         return cor_escolhida
 
-    def jogar(self, monte_compra: Pilha[Carta], monte_descarte: Pilha[Carta]):
-        """
-        Função principal da mão.
-        Seleciona uma carta da mão e joga.
-        Se não for possível selecionar uma carta da mão,
-        compra-se uma nova carta e tenta-se jogá-la novamente.
-        :param monte_compra: Monte de compras
-        :param monte_descarte: Monte de descarte
-        """
-        topo_descarte = monte_descarte.topo()
-        print(f"Topo de descarte: {topo_descarte}")
+    # def _jogar(self, monte_compra: Pilha[Carta], monte_descarte: Pilha[Carta]):
+    #     """
+    #     Função principal da mão.
+    #     Seleciona uma carta da mão e joga.
+    #     Se não for possível selecionar uma carta da mão,
+    #     compra-se uma nova carta e tenta-se jogá-la novamente.
+    #     :param monte_compra: Monte de compras
+    #     :param monte_descarte: Monte de descarte
+    #     """
+    #     topo_descarte = monte_descarte.topo()
+    #     print(f"Topo de descarte: {topo_descarte}")
 
-        print("Sua mão:")
-        pprint.pprint(sorted(self.cartas, key=lambda c: (c.cor, c.tipo)))
+    #     print("Sua mão:")
+    #     pprint.pprint(sorted(self.cartas, key=lambda c: (c.cor, c.tipo)))
 
-        cartas_possiveis = self.selecionar(topo_descarte)
-        if not cartas_possiveis:
-            print("Não há cartas possíveis de se jogar. Vamos comprar uma.")
-            monte_compra, monte_descarte = self.comprar(monte_compra, monte_descarte, quantidade=1)
+    #     cartas_possiveis = self.selecionar(topo_descarte)
+    #     if not cartas_possiveis:
+    #         print("Não há cartas possíveis de se jogar. Vamos comprar uma.")
+    #         monte_compra, monte_descarte = self.comprar(monte_compra, monte_descarte, quantidade=1)
 
-            # Nova tentativa
-            cartas_possiveis = self.selecionar(topo_descarte)
-            if not cartas_possiveis:
-                print("Carta comprada incompatível.")
-                return
+    #         # Nova tentativa
+    #         cartas_possiveis = self.selecionar(topo_descarte)
+    #         if not cartas_possiveis:
+    #             print("Carta comprada incompatível.")
+    #             return
 
-        print("Cartas possíveis:")
-        pprint.pprint(cartas_possiveis)
+    #     print("Cartas possíveis:")
+    #     pprint.pprint(cartas_possiveis)
 
-        carta_selecionada = self._seleciona_carta_possivel(cartas_possiveis)
-        if isinstance(carta_selecionada, CartaEspecial):
-            if carta_selecionada.tipo in ("coringa", "+4 coringa"):
-                cor_coringa = self.seleciona_cor_de_coringa()
-                carta_selecionada.cor = cor_coringa
+    #     carta_selecionada = self._seleciona_carta_possivel(cartas_possiveis)
+    #     if isinstance(carta_selecionada, CartaEspecial):
+    #         if carta_selecionada.tipo in ("coringa", "+4 coringa"):
+    #             cor_coringa = self.seleciona_cor_de_coringa()
+    #             carta_selecionada.cor = cor_coringa
 
-            carta_selecionada.esta_ativa = True
+    #         carta_selecionada.esta_ativa = True
 
-        self._descartar(carta_selecionada, monte_descarte)
-        return monte_compra, monte_descarte
+    #     self._descartar(carta_selecionada, monte_descarte)
+    #     return monte_compra, monte_descarte
 
 # def selecionar_proximo_jogador(
 #     idx_jogador_atual: int, quantidade_jogadores: int, em_sentido_horario: bool
