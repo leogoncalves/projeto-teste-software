@@ -60,7 +60,7 @@ import enum
 #         return f"CartaEspecial(cor={self.cor}, tipo={self.tipo}, esta_ativo={self.esta_ativo})"
 
 
-class Player:
+class Jogador:
     def __init__(self, cartas: T.List[Carta]):
         self.cartas = cartas
 
