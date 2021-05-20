@@ -41,7 +41,6 @@ import enum
 #     def como_lista(self) -> T.List[R]:
 #         return list(self.pilha)
 
-
 # class Carta:
 #     def __init__(self, cor: str, tipo: str):
 #         self.cor = cor
@@ -60,7 +59,7 @@ import enum
 #         return f"CartaEspecial(cor={self.cor}, tipo={self.tipo}, esta_ativo={self.esta_ativo})"
 
 
-class Player:
+class Jogador:
     def __init__(self, cartas: T.List[Carta]):
         self.cartas = cartas
 
@@ -89,33 +88,27 @@ class Player:
         return selecionadas
 
     def comprar(
-        self, monte_compra: Pilha[Carta], monte_descarte: Pilha[Carta], quantidade: int
-    ):
+        self, quantidade: int, monte_compra: List[Carta]
+    ) -> List[Carta]:
         """
         Caso eu não consiga selecionar nenhuma carta,
         preciso comprar uma (ou mais).
-        :param monte_compra: Monte de cartas de comprar
-        :param monte_descarte: Monte de cartas de descarte
+        
         :param quantidade: Quantidade de cartas a comprar
+        :param monte_compra: Monte de cartas de comprar
         """
-        for _ in range(quantidade):
-            
-            if not monte_compra:
-                print("Não há cartas a comprar. 1 momento...")
-                monte_compra = Pilha(
-                    random.sample(monte_descarte.como_lista(), len(monte_descarte))
-                )
-                monte_descarte = Pilha([monte_compra.desempilhar()])
-                
-            carta_comprada = monte_compra.desempilhar()
+        for _ in range(quantidade):                
+            carta_comprada = monte_compra.pop()
             self.cartas.append(carta_comprada)
-        return monte_compra, monte_descarte
-
-    def _seleciona_carta_possivel(
-        self, cartas_possiveis: T.List[Carta]
+            
+        return monte_compra
+    
+    @staticmethod
+    def escolher_carta_possivel(
+        cartas_possiveis: T.List[Carta]
     ) -> T.Optional[Carta]:
         """
-        Seleciona uma carta das várias cartas possíveis.
+        Escolhe uma carta das várias cartas possíveis.
         Retorna None caso não tenham cartas, mas é esperado que se tenha.
         :param cartas_possiveis: Lista de cartas possíveis
         :return: Carta selecionada (ou None)
@@ -138,7 +131,7 @@ class Player:
 
             print(f"Dê um número de 0 a {len(cartas_possiveis) - 1}")
 
-    def jogar(self, carta: Carta, monte_descarte: Pilha[Carta]):
+    def jogar(self, carta: Carta, monte_descarte: List[Carta]) -> List[Carta]:
         """
         Tira uma carta da mão e coloca no monte de descarte.
         :param carta: Carta selecionada
@@ -146,10 +139,12 @@ class Player:
         """
         self.cartas.remove(carta)
         monte_descarte.empilhar(carta)
-
-    def seleciona_cor_de_coringa(self):
+        return monte_descarte
+    
+    @staticmethod
+    def escolher_cor_de_coringa() -> str:
         """
-        Seleciona uma das 4 cores de coringa.
+        Escolhe uma das 4 cores de coringa.
         :return: Cor escolhida
         """
         cor_escolhida = None
@@ -161,7 +156,7 @@ class Player:
                 )
         return cor_escolhida
 
-    # def _jogar(self, monte_compra: Pilha[Carta], monte_descarte: Pilha[Carta]):
+    # def _jogar(self, monte_compra, monte_descarte):
     #     """
     #     Função principal da mão.
     #     Seleciona uma carta da mão e joga.
@@ -221,8 +216,8 @@ class Player:
 #     idx_jogador_anterior: int,
 #     idx_jogador_atual: int,
 #     carta_especial: CartaEspecial,
-#     monte_compra: Pilha[Carta],
-#     monte_descarte: Pilha[Carta],
+#     monte_compra,
+#     monte_descarte,
 #     em_sentido_horario: bool,
 # ) -> T.Tuple[int, int, bool]:
 #     """
@@ -273,8 +268,8 @@ class Player:
 
 # def jogar_rodada(
 #     maos: T.List[Mao],
-#     monte_compra: Pilha[Carta],
-#     monte_descarte: Pilha[Carta],
+#     monte_compra,
+#     monte_descarte,
 #     idx_jogador_anterior: int,
 #     idx_jogador_atual: int,
 #     em_sentido_horario: bool,
@@ -340,7 +335,7 @@ class Player:
 # def distribui_cartas(
 #     cartas: T.List[Carta], cartas_por_jogador: int,
 #     jogadores: int
-# ) -> T.Tuple[T.List[Mao], Pilha[Carta], Pilha[Carta]]:
+# ):
 #     """
 #     Cria jogadores, distribuindo cartas para cada um.
 #     :param cartas: Cartas do UNO
