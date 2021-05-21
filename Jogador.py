@@ -13,6 +13,12 @@ import random
 import pprint
 import enum
 
+# Este bloco define a classe carta como sendo um objeto que possui os atributos cor e tipo
+class Carta:
+    def __init__(self, cor, tipo):
+        self.cor = cor
+        self.tipo = tipo
+
 
 # QTD_CARTAS_INICIAIS = 7
 # JOGADORES = 1
@@ -62,6 +68,11 @@ import enum
 class Jogador:
     def __init__(self, cartas: T.List[Carta]):
         self.cartas = cartas
+
+    def imprimeMao(self):
+        for i in range(len(self.mao)):
+            print("Carta", i, " da cor:", self.mao[i].cor, " do tipo:", self.mao[i].tipo)
+
 
     def selecionar(self, topo_descarte: Carta) -> T.List[Carta]:
         """
