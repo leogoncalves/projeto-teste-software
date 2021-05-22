@@ -22,7 +22,7 @@ class Gerenciador:
       else:
           break
 
-    for n in range(n_de_jogadores):
+    for n in range(int(self.n_de_jogadores)):
       self.jogadores.append(Jogador(cartas=[])) # Consertar aqui: classe Player depende do outro grupo fazer.
 
   def verificarVencedor(self, jogador):
@@ -36,7 +36,6 @@ class Gerenciador:
   def virarPilhaMesaParaCompra(self):
     """
         Transforma a pilha de cartas da mesa na pilha de compra. As cartas são embaralhadas.
-
     """
 
     topo_pilha_mesa = self.pilha_mesa.pop() 
@@ -58,7 +57,7 @@ class Gerenciador:
       return (atual_jogador + self.orientacao_jogo) % self.n_de_jogadores
     elif (jogou_carta_especial and jogou_reverso):
       return (atual_jogador + self.orientacao_jogo) % self.n_de_jogadores
-    else:
+    else  :
       return (atual_jogador + 2*self.orientacao_jogo) % self.n_de_jogadores
 
   def inicializarJogo(self): # Consertar aqui: função inicializer depende do outro grupo fazer
@@ -67,6 +66,29 @@ class Gerenciador:
     """   
     # Utilizar o self para pegar o conteúdo das variáveis jogadores, pilha_compra e pilha_mesa
     pass
+
+  def acaoJogada(atual_jogador, tipoCarta):
+    prox_jogador = self.calcularProxJogador(atual_jogador)
+
+    if tipoCarta == "mais":
+      prox_jogador = self.calcularProxJogador(atual_jogador, True, False)
+      prox_jogador = comprar(2, pilha_compra)
+
+    elif tipoCarta == "vaivolta":
+      prox_jogador = self.calcularProxJogador(atual_jogador, True, True)
+
+    elif tipoCarta == "bloq":
+      prox_jogador = self.calcularProxJogador(atual_jogador, True, False)
+
+    elif tipoCarta == "preto":
+      print("temp")
+      # trocar a cor do topo da pilha e retirar o numero
+
+    elif tipoCarta == "pretomais":
+      prox_jogador = self.calcularProxJogador(atual_jogador, True, False)
+      # trocar a cor do topo da pilha e retirar o numero
+
+    return prox_jogador
 
   def gerenciarJogo(self):
     """
@@ -104,14 +126,13 @@ class Gerenciador:
         
         possiveis_cartas_para_jogar = self.jogadores[atual_jogador].selecionar(self.pilha_mesa[0])
       
+      carta_escolhida = int(input("Escolha qual carta irá jogar. Digite um número de 1 a " + str(len(possiveis_cartas_para_jogar)) + ", que corresponde a posição da carta na listagem de possíveis cartas a jogar acima."))-1
       # Verifica se agora tem cartas a jogar e caso sim, o jogador joga, caso contrário ele é dado a vez ao próximo.
       if(possiveis_cartas_para_jogar):
-        carta_escolhida = int(input("Escolha qual carta irá jogar. Digite um número de 1 a " + str(len(possiveis_cartas_para_jogar)) + ", que corresponde a posição da carta na listagem de possíveis cartas a jogar acima."))-1
         self.jogadores[atual_jogador].jogar(possiveis_cartas_para_jogar[carta_escolhida], self.pilha_mesa)
-
-        # TO-DO: Implementar para verificar se foi jogado uma carta preta e pedir qual a cor
       else:
         print("Você não tem cartas a jogar mesmo se teve que comprar uma nova. Por isso a vez será passada.")
+        continue
       
       # Verifica se o jogador atual é o vencedor. Caso seja, acaba o jogo.
       if(self.verificarVencedor(self.jogadores[atual_jogador])):
@@ -120,12 +141,9 @@ class Gerenciador:
         break
 
       #### Código para fazer efeito da jogada do atual jogador (Ações do Gerente) ####
-      
-      # TO-DO: Aqui pensamos em funções que farão o efeito das ações da jogada do jogador atual nos jogadores seguintes. Além de definir quem é o próximo jogador (prox_jogador)além de fazer atual_jogador = prox_jogador.
-      prox_jogador = self.calcularProxJogador(atual_jogador, jogou_carta_especial, jogou_reverso)
+      prox_jogador = acaoJogada(atual_jogador)
       atual_jogador = prox_jogador
 
-  
 if __name__ == "__main__":
   gerenciador = Gerenciador()
   gerenciador.inicializarJogo()
