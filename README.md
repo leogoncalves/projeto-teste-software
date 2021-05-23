@@ -7,16 +7,19 @@ Em resumo, o projeto consiste numa elaboração básica do jogo de cartas Uno e 
 
 ## Organização das tarefas
 
-- ```Manager.py``` é a classe correspondente ao gerente do jogo ("Deus") que irá inicializar o jogo, bem como gerenciar os jogadores e suas jogadas.
+- ```Gerenciador.py``` contém a classe correspondente ao gerente do jogo ("Deus") que irá inicializar o jogo, bem como gerenciar os jogadores e suas jogadas.
     - Responsáveis
     - Grupo 3: [Eduardo Barbosa](https://github.com/Eduardodsb), Maria Eduarda Lucena, [Rafael Cardoso](https://github.com/Cardosorf) e [Tainá Lima](https://github.com/tainaslima)
     - Grupo 4: Joyce, Gabriel e Thiago
-- ```manager.inicializer()``` é a função dentro da classe Manager que incializa o jogo com as preparações necessárias. Tais preparações incluem: distribuir as cartas para os jogadores, definir a pilha de compra e a pilha da mesa.
+- ```gerenciador.inicializarJogo()``` é a função dentro da classe Manager que incializa o jogo com as preparações necessárias. Tais preparações incluem: distribuir as cartas para os jogadores, definir a pilha de compra e a pilha da mesa.
     - Responsáveis
     - Grupo 5: Giovanni, Henrique, Lucas e Rodrigo
-- ```Player.py``` é a classe correspondente ao jogador dentro do Uno. Ela terá como funções principis a de comprar carta, jogar carta e escolher as possíveis cartas a jogar.
+- ```Jogador.py``` contém a classe correspondente ao jogador dentro do Uno. Ela terá como funções principis a de comprar carta, jogar carta e escolher as possíveis cartas a jogar.
     - Responsáveis
     - Grupo 2: Felipe, Jones, Larissa Galeno e [Leonardo Gonçalves](https://github.com/leogoncalves)
+- ```Baralho.py``` contém as classes Carta e Monte. A primeira define as características de uma carta e a segunda define o deque das cartas.
+    - Responsáveis
+    - Grupo 5: Giovanni, Henrique, Lucas e Rodrigo
 
 ## Ferramentas utilizadas
 - Python 3.x + bibliotecas
