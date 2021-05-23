@@ -10,7 +10,7 @@ class Carta:
         if (self.tipo == "+4" or self.tipo == "escolhacor"):
             return "Carta " + str(self.tipo)
         else:
-            return "Carta" + str(self.tipo) + " " + str(self.cor)
+            return "Carta " + str(self.tipo) + " " + str(self.cor)
 
     def __repr__(self):
         return self.__str__()

@@ -44,9 +44,7 @@ class Jogador:
 
         return selecionadas
 
-    def comprar(
-        self, quantidade: int, monte_compra: List[Carta]
-    ) -> List[Carta]:
+    def comprar(self, quantidade: int, monte_compra: T.List[Carta]) -> T.List[Carta]:
         """
         Caso eu não consiga selecionar nenhuma carta,
         preciso comprar uma (ou mais).
@@ -61,9 +59,7 @@ class Jogador:
         return monte_compra
     
     @staticmethod
-    def escolher_carta_possivel(
-        cartas_possiveis: T.List[Carta]
-    ) -> T.Optional[Carta]:
+    def escolher_carta_possivel(cartas_possiveis: T.List[Carta]) -> T.Optional[Carta]:
         """
         Escolhe uma carta das várias cartas possíveis.
         Retorna None caso não tenham cartas, mas é esperado que se tenha.
@@ -88,14 +84,14 @@ class Jogador:
 
             print(f"Dê um número de 0 a {len(cartas_possiveis) - 1}")
 
-    def jogar(self, carta: Carta, monte_descarte: List[Carta]) -> List[Carta]:
+    def jogar(self, carta: Carta, monte_descarte: T.List[Carta]) -> T.List[Carta]:
         """
         Tira uma carta da mão e coloca no monte de descarte.
         :param carta: Carta selecionada
         :param monte_descarte: Monte de descarte
         """
         self.cartas.remove(carta)
-        monte_descarte.empilhar(carta)
+        monte_descarte.insert(0, carta)
         return monte_descarte
     
     @staticmethod
