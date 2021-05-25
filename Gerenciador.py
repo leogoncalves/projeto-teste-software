@@ -64,7 +64,7 @@ class Gerenciador:
     # Inicializa a pilha de descarte do jogo construindo o objeto "monte" e retirando 1 carta
     monte = Monte()
     self.pilha_mesa.append(monte.desempilhaMonte())
-
+    
     while True:
       self.n_de_jogadores = int(input("Digite o número de jogadores:"))
 
