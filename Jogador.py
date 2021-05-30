@@ -54,7 +54,7 @@ class Jogador:
         :param monte_compra: Monte de cartas de comprar
         """
         for _ in range(quantidade):                
-            carta_comprada = monte_compra.pop()
+            carta_comprada = monte_compra.pop(0)
             self.cartas.append(carta_comprada)
             
         return monte_compra
