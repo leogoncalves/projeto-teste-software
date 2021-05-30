@@ -8,10 +8,11 @@ Leonardo Gonçalves - DRE: 111337097
 
 import itertools
 from collections import deque
+import enum
 import typing as T
 import random
 import pprint
-import enum
+
 from Baralho import Carta
 
 CORES_VALIDAS = ("amarelo", "azul", "verde", "vermelho")
@@ -37,7 +38,7 @@ class Jogador:
             """
             cor_bate = topo.cor == carta.cor
             tipo_bate = topo.tipo == carta.tipo
-            eh_coringa = carta.cor == "*"
+            eh_coringa = carta.cor == "preto"
             return cor_bate or tipo_bate or eh_coringa
 
         selecionadas = [carta for carta in self.cartas if filtro(topo_descarte, carta)]
