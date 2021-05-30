@@ -201,7 +201,7 @@ class Gerenciador:
       if(self.verificarVencedor(self.jogadores[atual_jogador])):
         # Redefine as cartas coringas
         if(self.pilha_mesa[0].tipo == "+4" or self.pilha_mesa[0].tipo == "escolhacor"):
-          self.pilha_mesa[0].cor = "*"
+          self.pilha_mesa[0].cor = "preto"
         self.TERMINAROJOGO = True
         print("\n\n")
         print("-----------------------------------------------")
