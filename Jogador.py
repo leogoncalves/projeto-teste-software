@@ -91,6 +91,7 @@ class Jogador:
         :param carta: Carta selecionada
         :param monte_descarte: Monte de descarte
         """
+        
         self.cartas.remove(carta)
         monte_descarte.insert(0, carta)
         return monte_descarte

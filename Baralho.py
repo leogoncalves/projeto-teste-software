@@ -6,6 +6,9 @@ class Carta:
     def __init__(self, cor, tipo):
         self.cor = cor
         self.tipo = tipo
+    
+    def __eq__(self, other):
+        return self.cor == other.cor and self.tipo == other.tipo
 
     def __str__(self):
         if (self.tipo == "+4" or self.tipo == "escolhacor"):
