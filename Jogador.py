@@ -54,7 +54,7 @@ class Jogador:
         :param monte_compra: Monte de cartas de comprar
         """
         for _ in range(quantidade):                
-            carta_comprada = monte_compra.pop()
+            carta_comprada = monte_compra.pop(0)
             self.cartas.append(carta_comprada)
             
         return monte_compra
@@ -104,7 +104,7 @@ class Jogador:
         """
         cor_escolhida = None
         while cor_escolhida not in CORES_VALIDAS:
-            cor_escolhida = input("Escolha uma cor (amarelo, azul, verde, vermelho): ").lower()
+            cor_escolhida = input("Escolha uma cor (amarelo, azul, verde, vermelho): \n").lower()
             if cor_escolhida not in CORES_VALIDAS:
                 print(
                     "Cor inválida.\n" f'Escolha uma entre {", ".join(CORES_VALIDAS)}.'

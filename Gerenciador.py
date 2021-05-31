@@ -1,3 +1,4 @@
+import sys
 import random
 from Baralho import Carta
 from Baralho import Monte
@@ -5,17 +6,19 @@ from Jogador import Jogador
 
 class Gerenciador:
 
-  def __init__(self):
+  def __init__(self, teste = False, jogadores = [], pilha_compra = [], pilha_mesa=[], primeiro_jogador = 0, orientacao_jogo = 1):
     self.ESQUERDA = -1
     self.DIREITA = 1
     self.TERMINAROJOGO = False
-    self.n_de_jogadores = 2
-    self.jogadores = []
-    self.orientacao_jogo = self.DIREITA
-    self.pilha_compra = []
-    self.pilha_mesa = []
+    self.n_de_jogadores = 4
+    self.jogadores = jogadores
+    self.orientacao_jogo = orientacao_jogo
+    self.pilha_compra = pilha_compra
+    self.pilha_mesa = pilha_mesa
     self.jogou_carta_preta = False
     self.qtd_cartas_iniciais = 7
+    self.primeiro_jogador = primeiro_jogador
+    self.teste = teste
 
   def verificarVencedor(self, jogador):
     """
@@ -23,7 +26,7 @@ class Gerenciador:
         :param jogador: Objeto do tipo Jogador.
         :return: Booleano
     """
-    return True if(len(jogador.cartas) == 0) else False # Consertar aqui: classe Player depende do outro grupo fazer.
+    return True if(len(jogador.cartas) == 0) else False 
 
   def virarPilhaMesaParaCompra(self):
     """
@@ -69,7 +72,7 @@ class Gerenciador:
 
 
     while True:
-      self.n_de_jogadores = int(input("Digite o número de jogadores:"))
+      self.n_de_jogadores = int(input("Digite o número de jogadores:\n"))
 
       if int(self.n_de_jogadores) not in list(range(2,10)):
         print("Número inválido de jogadores.")
@@ -92,20 +95,23 @@ class Gerenciador:
 
     if carta.tipo == "+2":
       self.jogadores[prox_jogador].comprar(2, self.pilha_compra)
-      print("Jogador " + str(prox_jogador) + "comprou 2 cartas!")
+      print("---------------------")
+      print("Jogador " + str(prox_jogador) + " comprou 2 cartas!")
       print("Suas cartas são: " + str(self.jogadores[prox_jogador].cartas))
-
+      print("\n")
       prox_jogador = self.calcularProxJogador(atual_jogador, True, False, False)
 
     elif carta.tipo == "reverso":
       self.orientacao_jogo = self.ESQUERDA if (self.orientacao_jogo == self.DIREITA) else self.DIREITA
+      print("---------------------")
       print("O jogo virou de sentido!")
-
+      print("\n")
       prox_jogador = self.calcularProxJogador(atual_jogador, True, True, False)
 
     elif carta.tipo == "pula":
-      print("Jogador " + str(prox_jogador) + "foi pulado!")
-
+      print("---------------------")
+      print("Jogador " + str(prox_jogador) + " foi pulado!")
+      print("\n")
       prox_jogador = self.calcularProxJogador(atual_jogador, True, False, False)
 
     elif carta.tipo == "escolhacor":
@@ -115,9 +121,10 @@ class Gerenciador:
 
     elif carta.tipo == "+4":
       self.jogadores[prox_jogador].comprar(4, self.pilha_compra)
+      print("---------------------")
       print("Jogador " + str(prox_jogador) + " comprou 4 cartas!")
       print("Suas cartas são: " + str(self.jogadores[prox_jogador].cartas))
-
+      print("\n")
       prox_jogador = self.calcularProxJogador(atual_jogador, True, False, False)
       cor = self.jogadores[atual_jogador].escolher_cor_de_coringa()
       carta.cor = cor
@@ -130,11 +137,17 @@ class Gerenciador:
         Gerencia o jogo: chama as funções do jogador e faz o efeito de suas ações, dá a vez para o próximo jogador.
         Nesta lógica, as variáveis primeiro_jogador, atual_jogador e prox_jogador indicam a posição do objeto Jogador na lista jogadores.
     """
-    self.inicializarJogo()
 
-    primeiro_jogador = random.randint(0, self.n_de_jogadores-1)
+    if(not self.teste):
 
-    atual_jogador = primeiro_jogador
+      self.inicializarJogo()
+      primeiro_jogador = random.randint(0, self.n_de_jogadores-1)
+      atual_jogador = primeiro_jogador
+
+    else:
+
+      primeiro_jogador = self.primeiro_jogador
+      atual_jogador = primeiro_jogador
 
     while not self.TERMINAROJOGO:
       
@@ -148,6 +161,7 @@ class Gerenciador:
       
       possiveis_cartas_para_jogar = self.jogadores[atual_jogador].selecionar(self.pilha_mesa[0])
       print("Suas possíveis cartas a jogar são: " + str(possiveis_cartas_para_jogar))
+      print("\n") 
       
       # Caso o jogador não tenha cartas para jogar, o gerente compra uma para ele. Caso a pilha de compra esteja vazia, a pilha de mesa
       # vira a de compra antes de passar uma carta para o jogador atual.
@@ -161,31 +175,44 @@ class Gerenciador:
         self.jogadores[atual_jogador].comprar(1, self.pilha_compra)
         
         possiveis_cartas_para_jogar = self.jogadores[atual_jogador].selecionar(self.pilha_mesa[0])
-        print("Suas cartas agora são: " + str(self.jogadores[atual_jogador].cartas))
+        print("Suas cartas agora são: " + str(self.jogadores[atual_jogador].cartas)) 
         print("Suas possíveis cartas a jogar agora são: " + str(possiveis_cartas_para_jogar))
+        print("\n")
+
+      # Redefine as cartas coringas
+      if(self.pilha_mesa[0].tipo == "+4" or self.pilha_mesa[0].tipo == "escolhacor"):
+        self.pilha_mesa[0].cor = "preto"
 
       # Verifica se agora tem cartas a jogar e caso sim, o jogador joga, caso contrário ele é dado a vez ao próximo.
       if(possiveis_cartas_para_jogar):
-        carta_escolhida = int(input("Escolha qual carta irá jogar. Digite um número de 1 a " + str(len(possiveis_cartas_para_jogar)) + ", que corresponde a posição da carta na listagem de possíveis cartas a jogar acima."))-1
+        print("---------------------")
+        carta_escolhida = int(input("Escolha qual carta irá jogar. Digite um número de 1 a " + str(len(possiveis_cartas_para_jogar)) + ", que corresponde a posição da carta na listagem de possíveis cartas a jogar acima.\n\n"))-1
         prox_jogador = self.acaoJogada(atual_jogador, possiveis_cartas_para_jogar[carta_escolhida])
 
         self.jogadores[atual_jogador].jogar(possiveis_cartas_para_jogar[carta_escolhida], self.pilha_mesa)
 
       else:
-        print("Você não tem cartas a jogar mesmo tendo comprado uma nova. Por isso a vez será passada.")
+        print("---------------------")
+        print("\nVocê não tem cartas a jogar mesmo tendo comprado uma nova. Por isso a vez será passada.\n\n")
         atual_jogador = self.calcularProxJogador(atual_jogador)
         continue
       
       # Verifica se o jogador atual é o vencedor. Caso seja, acaba o jogo.
       if(self.verificarVencedor(self.jogadores[atual_jogador])):
+        # Redefine as cartas coringas
+        if(self.pilha_mesa[0].tipo == "+4" or self.pilha_mesa[0].tipo == "escolhacor"):
+          self.pilha_mesa[0].cor = "preto"
         self.TERMINAROJOGO = True
+        print("\n\n")
         print("-----------------------------------------------")
         print("-----------------------------------------------")
         print("Jogador " + str(atual_jogador) + " ganhou!!! Parabéns!")
-        break
+        return "Jogador " + str(atual_jogador) + " ganhou!!! Parabéns!"
       
       atual_jogador = prox_jogador
      
 if __name__ == "__main__":
+
+
   gerenciador = Gerenciador()
   gerenciador.gerenciarJogo()
