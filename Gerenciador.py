@@ -6,13 +6,13 @@ from Jogador import Jogador
 
 class Gerenciador:
 
-  def __init__(self, teste = False, jogadores = [], pilha_compra = [], pilha_mesa=[], primeiro_jogador = 0):
+  def __init__(self, teste = False, jogadores = [], pilha_compra = [], pilha_mesa=[], primeiro_jogador = 0, orientacao_jogo = 1):
     self.ESQUERDA = -1
     self.DIREITA = 1
     self.TERMINAROJOGO = False
     self.n_de_jogadores = 4
     self.jogadores = jogadores
-    self.orientacao_jogo = self.DIREITA
+    self.orientacao_jogo = orientacao_jogo
     self.pilha_compra = pilha_compra
     self.pilha_mesa = pilha_mesa
     self.jogou_carta_preta = False
@@ -26,7 +26,7 @@ class Gerenciador:
         :param jogador: Objeto do tipo Jogador.
         :return: Booleano
     """
-    return True if(len(jogador.cartas) == 0) else False # Consertar aqui: classe Player depende do outro grupo fazer.
+    return True if(len(jogador.cartas) == 0) else False 
 
   def virarPilhaMesaParaCompra(self):
     """
