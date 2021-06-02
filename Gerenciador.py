@@ -10,7 +10,7 @@ class Gerenciador:
     self.ESQUERDA = -1
     self.DIREITA = 1
     self.TERMINAROJOGO = False
-    self.n_de_jogadores = 4
+    self.n_de_jogadores = len(jogadores)
     self.jogadores = jogadores
     self.orientacao_jogo = orientacao_jogo
     self.pilha_compra = pilha_compra
